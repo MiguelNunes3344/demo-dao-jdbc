@@ -1,0 +1,19 @@
+package db;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
+public class DB {
+	
+	
+	public static Properties loadProperties() {
+		try (FileInputStream fs = new FileInputStream("db.properties")) {
+			Properties prop = new Properties();
+			prop.load(fs);
+			return prop;
+		} catch(IOException e) {
+			throw new DbException(e.getMessage());
+		}
+	}
+}

@@ -1,0 +1,5 @@
+INDEX VERSION 1.134+F:\projetos_Eclipse\aulas-jdbc\.metadata\.plugins\org.eclipse.jdt.core
+2440592584.index
+1568247533.index
+1865797976.index
+370000667.index

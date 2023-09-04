@@ -1,12 +1,26 @@
 package model.dao.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
+import db.DB;
+import db.DbException;
 import model.dao.SellerDao;
+import model.entities.Department;
 import model.entities.Seller;
 
 public class SellerDaoJdbc implements SellerDao{
-
+	
+	private Connection conn;
+	
+	public SellerDaoJdbc(Connection conn) {
+		this.conn = conn;
+	}
+	
+	
 	@Override
 	public void insert(Seller obj) {
 		// TODO Auto-generated method stub
@@ -27,8 +41,40 @@ public class SellerDaoJdbc implements SellerDao{
 
 	@Override
 	public Seller findById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			ps = conn.prepareStatement("SELECT seller.*, department.Name FROM seller "
+					+ "INNER JOIN department ON seller.DepartmentId = department.Id "
+					+ "WHERE seller.Id = ?;");
+			ps.setInt(1, id);
+			rs = ps.executeQuery();
+			if (rs.next()) {
+				Department dep = new Department();
+				dep.setId(rs.getInt("DepartmentId"));
+				dep.setName(rs.getString("Name"));
+				Seller sl = new Seller();
+				sl.setId(rs.getInt("Id"));
+				sl.setName(rs.getString("Name"));
+				sl.setEmail(rs.getString("Email"));
+				sl.setBirthDate(rs.getDate("BirthDate"));
+				sl.setDepartment(dep);
+				return sl;
+			}
+			return null;
+			
+
+		} catch (SQLException e) {
+			throw new DbException("Failed insert into Database: "+ e.getMessage());
+		}
+		finally {
+			DB.closeResultSet(rs);
+			DB.closeStatement(ps);
+		}
+		
+		
+		
+		
 	}
 
 	@Override

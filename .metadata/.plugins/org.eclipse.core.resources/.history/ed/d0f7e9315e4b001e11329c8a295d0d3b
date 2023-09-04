@@ -1,0 +1,27 @@
+package model.entities;
+
+import java.sql.Date;
+
+public class Seller {
+	private int id;
+	private String name;
+	private String email;
+	private Date BirthDate;
+	private Double BaseSalary;
+	
+	Department department;
+	
+	public Seller() {
+		
+	}
+
+	public Seller(int id, String name, String email, Date birthDate, Double baseSalary, Department department) {
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		BirthDate = birthDate;
+		BaseSalary = baseSalary;
+		this.department = department;
+	}
+	
+}

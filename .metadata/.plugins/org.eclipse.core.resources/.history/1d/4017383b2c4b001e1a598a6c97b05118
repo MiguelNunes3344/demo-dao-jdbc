@@ -1,0 +1,63 @@
+package application;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Scanner;
+
+import db.DB;
+
+
+public class Program {
+	
+	
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		char ans = 'y';
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
+		
+		
+		do {
+			try {
+				conn = DB.getConnection();
+				ps = conn.prepareStatement("INSERT INTO seller(Name,Email,BirthDate,BaseSalary,DepartmentId) VALUES (?, ?, ?, ?, ?)");
+				System.out.println("Seller Name");
+			
+				ps.setString(1, sc.nextLine());
+				
+				
+				System.out.println("Seller Email");
+				ps.setString(2, sc.nextLine());
+				System.out.println("Seller BirthDate");
+				ps.setDate(3, null);
+				String name = sc.nextLine();
+				ps.setDouble(4, 6.0);
+				String name = sc.nextLine();
+				ps.setInt(5, 5);
+				String name = sc.nextLine();
+			}
+			catch (SQLException e) {
+				e.printStackTrace();
+			}
+			finally {
+				DB.closeStatement(ps);
+				DB.closeConnection();
+			}
+			
+			System.out.println("Register Seller");
+			
+			
+			System.out.println("Continue? (y/n)");
+			ans = sc.next().charAt(0);
+		} while (ans != 'n');
+		
+	}
+}

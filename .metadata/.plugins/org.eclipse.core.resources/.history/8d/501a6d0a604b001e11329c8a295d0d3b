@@ -1,0 +1,9 @@
+package model.dao;
+
+public interface DepartmentDao {
+	void insert();
+	void update();
+	void deleById();
+	void findById)();
+	void findAll();
+}

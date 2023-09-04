@@ -1,0 +1,15 @@
+package application;
+
+import java.sql.Date;
+import model.entities.Department;
+import model.entities.Seller;
+
+public class Program {
+
+	public static void main(String[] args) {
+		Department dt = new Department(3,"Computers");
+		Seller sl = new Seller(2,"Sergio","Sergio@gmail.com",new Date().getTime(),2000.0,dt);
+
+	}
+
+}
