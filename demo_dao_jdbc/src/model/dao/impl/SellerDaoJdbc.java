@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import db.DB;
@@ -33,11 +35,41 @@ public class SellerDaoJdbc implements SellerDao{
 		
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
+		PreparedStatement ps = null;
+		
+		try {
+			ps = conn.prepareStatement("DELETE FROM seller WHERE Id = ?");
+			ps.setInt(1, id);
+			ps.executeUpdate();
+		} 
+		catch (SQLException e) {
+			throw new DbException("Error deleting user: "+e.getMessage());
+		} 
+		finally {
+			DB.closeStatement(ps);
+		}
 		
 	}
+	
 
 	@Override
 	public Seller findById(Integer id) {
@@ -50,15 +82,8 @@ public class SellerDaoJdbc implements SellerDao{
 			ps.setInt(1, id);
 			rs = ps.executeQuery();
 			if (rs.next()) {
-				Department dep = new Department();
-				dep.setId(rs.getInt("DepartmentId"));
-				dep.setName(rs.getString("Name"));
-				Seller sl = new Seller();
-				sl.setId(rs.getInt("Id"));
-				sl.setName(rs.getString("Name"));
-				sl.setEmail(rs.getString("Email"));
-				sl.setBirthDate(rs.getDate("BirthDate"));
-				sl.setDepartment(dep);
+				Department dep = instanciateDep(rs);
+				Seller sl = instanciateSeller(rs, dep);
 				return sl;
 			}
 			return null;
@@ -72,15 +97,53 @@ public class SellerDaoJdbc implements SellerDao{
 			DB.closeStatement(ps);
 		}
 		
-		
-		
-		
 	}
 
 	@Override
 	public List<Seller> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		List<Seller> list = new ArrayList<>();
+		try {
+			ps = conn.prepareStatement("Select seller.*, Department.Name FROM seller "
+					+ "INNER JOIN department ON seller.DepartmentId = department.Id");
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				
+				Department dep = instanciateDep(rs);
+				Seller seller = instanciateSeller(rs,dep);
+				list.add(seller);
+					
+				
+			}
+			return list;
+		}
+		catch (SQLException e) {
+			throw new DbException("Error fetching all users: "+ e.getMessage());
+		}
+		finally {
+			DB.closeResultSet(rs);
+			DB.closeStatement(ps);
+		}
+	}
+
+	private Seller instanciateSeller(ResultSet rs, Department dep) throws SQLException {
+		Seller seller = new Seller();
+		seller.setId(rs.getInt("Id"));
+		seller.setName(rs.getString("Name"));
+		seller.setEmail(rs.getString("Email"));
+		seller.setBaseSalary(rs.getDouble("BaseSalary"));
+		seller.setBirthDate(rs.getDate("BirthDate"));
+		seller.setDepartment(dep);
+		return seller;
+	}
+
+	private Department instanciateDep(ResultSet rs) throws SQLException {
+		Department dep = new Department();
+		dep.setId(rs.getInt("DepartmentId"));
+		dep.setName(rs.getString("Department.Name"));
+		return dep;
 	}
 	
 }

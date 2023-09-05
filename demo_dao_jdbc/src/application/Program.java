@@ -1,6 +1,8 @@
 package application;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import model.dao.DaoFactory;
 import model.dao.SellerDao;
@@ -11,11 +13,14 @@ import model.entities.Seller;
 public class Program {
 
 	public static void main(String[] args) {
-		
+		List<Seller> list = new ArrayList<>();
 		SellerDao sellerDao = DaoFactory.createSeller();
 		
-		Seller seller = sellerDao.findById(4);
-		System.out.println(seller);
+		list = sellerDao.findAll();
+		for (Seller x: list) {
+			System.out.println(x);
+		}
+		
 	}
 
 }
