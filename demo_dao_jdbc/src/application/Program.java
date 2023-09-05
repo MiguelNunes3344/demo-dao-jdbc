@@ -20,6 +20,11 @@ public class Program {
 		for (Seller x: list) {
 			System.out.println(x);
 		}
+		System.out.println("FIND BY DEPARTMENT");
+		list = sellerDao.findByDepartment(9);
+		for(Seller x: list) {
+			System.out.println(x);
+		}
 		
 	}
 
