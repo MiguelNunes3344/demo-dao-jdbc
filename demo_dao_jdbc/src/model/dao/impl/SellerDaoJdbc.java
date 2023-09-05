@@ -123,10 +123,13 @@ public class SellerDaoJdbc implements SellerDao{
 			ps = conn.prepareStatement("Select seller.*, Department.Name FROM seller "
 					+ "INNER JOIN department ON seller.DepartmentId = department.Id");
 			rs = ps.executeQuery();
-			
+			Map<Integer, Department> map = new HashMap<>();
 			while(rs.next()) {
 				
-				Department dep = instanciateDep(rs);
+				Department dep = map.get(rs.getInt("departmentId"));
+				if (dep==null) {
+					dep =instanciateDep(rs);
+				}
 				Seller seller = instanciateSeller(rs,dep);
 				list.add(seller);
 					
