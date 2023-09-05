@@ -105,7 +105,7 @@ public class SellerDaoJdbc implements SellerDao{
 			
 
 		} catch (SQLException e) {
-			throw new DbException("Failed insert into Database: "+ e.getMessage());
+			throw new DbException("Failed fetch user into Database: "+ e.getMessage());
 		}
 		finally {
 			DB.closeResultSet(rs);
